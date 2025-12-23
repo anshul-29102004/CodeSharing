@@ -1,5 +1,8 @@
+"use client";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+
+
 import React,{createContext,useEffect,useState,useContext, Children}from "react";
 import toast from "react-hot-toast"
 
@@ -17,7 +20,7 @@ export const UserContextProvider=({children})=>{
     password:"",
   })
 
-  const[loading,setLoading]=useState(true);
+  const[loading,setLoading]=useState(false);
 
   const registerUser=async(e)=>{
     e.preventDefault();
@@ -63,9 +66,10 @@ const loginUser=async(e)=>{
         },{
             withCredentials:true,
         })
+        await getUser();
         toast.success("User logged in successfully");
-        setUserState({
-            name:"",
+         setUserState({
+            email:"",
             password:"",
         })
         router.push('/');
@@ -84,13 +88,11 @@ const userLoginStatus=async()=>{
     }) 
     loggedIn=!!res.data
     setLoading(false)
-    if(!loggedIn)
-    {
-        router.push("/login")
-    }
+    
 
     } catch (error) {
         console.log("Error getting user login user status",error)
+        setLoading(false)
         
     }
     return loggedIn;
@@ -107,9 +109,91 @@ const logoutUser=async()=>{
 
     } catch (error) {
        console.log("Error logging out user",error);
+       
        toast.error(error.response.data.message) 
     }
 }
+
+
+const getUser=async ()=>{
+    setLoading(true)
+    try {
+        const res=await axios.get(`${serverUrl}/api/v1/profile`,{
+            withCredentials:true,
+        });
+        setUser((prevState)=>{
+            return {
+                ...prevState,
+                ...res.data,
+            }
+        })
+        setLoading(false)
+    } catch (error) {
+        console.log("Error getting  user",error);
+        setLoading(false)
+       toast.error(error.response.data.message) 
+    }
+}
+
+//update user
+const updateUser=async(e,data)=>{
+   
+    e.preventDefault();
+    setLoading(true)
+
+    try {
+      const res=await axios.patch(`${serverUrl}/api/v1/user`,data,{
+        withCredentials:true,
+      })
+      setUser((prevState)=>{
+        return {
+            ...prevState,
+            ...res.data,
+        }
+      })
+      toast.success("User updated successfully")
+      setLoading(false)
+    } catch (error) {
+        console.log("Error updating user details",error)
+        setLoading(false)
+        toast.error(error.response.data.message)
+    }
+}
+
+const emailVerification=async()=>{
+    setLoading(true)
+    try {
+        const res=axios.post(`${serverUrl}/api/v1/verify-email`,{},
+    {
+        withCredentials:true,
+    })
+    toast.success("Email verification sent successfully")
+    setLoading(false)
+    } catch (error) {
+        console.log("Error in email verification",error)
+        toast.error(error.response.data.message)
+    }
+}
+
+const verifyUser=async(token)=>{
+    setLoading(true)
+    try {
+        const res=await axios.post(`${serverUrl}/api/v1/verify-user/${token}`,{},{
+            withCredentials:true,
+        })
+        toast.success('Account verified')
+        getUser()
+        router.push('/')
+
+
+    } catch (error) {
+        console.log("Error verifiying user",error)
+        toast.error(error.response.data.message)
+        setLoading(false)
+    }
+}
+
+
 
    const handlerUserInput=(name)=>(e)=>{
     const value=e.target.value;
@@ -121,19 +205,31 @@ const logoutUser=async()=>{
    }
 
    useEffect(()=>{
-    if(userLoginStatus()){
-      userLoginStatus();    
+    const loginStatusGetUser=async()=>{
+        const isLoggedIn=await userLoginStatus()
+
+        if(isLoggedIn){
+            getUser();
+        }
     }
+    loginStatusGetUser()
    },[]);
 
 
     return (
+
         <UserContext.Provider value={{
             registerUser,
             userState,
             handlerUserInput,
             loginUser,
             logoutUser,
+            getUser,
+            userLoginStatus,
+            user,
+            updateUser,
+            emailVerification,
+            verifyUser,
         }}>
         {children}
         </UserContext.Provider>

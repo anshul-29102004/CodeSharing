@@ -39,7 +39,7 @@ const SnippetSchema=new mongoose.Schema({
 ],
     bookmarkedBy:[
         {
-            type:mongoose.Schema.Tyoes.ObjectId,
+            type:mongoose.Schema.Types.ObjectId,
             ref:"User",
         },
     ],
