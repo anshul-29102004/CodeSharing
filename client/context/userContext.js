@@ -182,7 +182,9 @@ const verifyUser=async(token)=>{
             withCredentials:true,
         })
         toast.success('Account verified')
-        getUser()
+        getUser(
+
+        )
         router.push('/')
 
 
@@ -191,6 +193,21 @@ const verifyUser=async(token)=>{
         toast.error(error.response.data.message)
         setLoading(false)
     }
+}
+
+const forgotPasswordEmail=async(email)=>{
+     setLoading(true)
+     try {
+        const res=await axios.post(`${serverUrl}/api/v1/forgot-password`,{email},{
+            withCredentials:true,
+        })
+        toast.success("Forgot password email sent successfully")
+        setLoading(false);
+     } catch (error) {
+        console.log("Error sending forgot password email",error)
+        toast.error(error.response.data.message)
+        setLoading(false)
+     }
 }
 
 
@@ -230,6 +247,7 @@ const verifyUser=async(token)=>{
             updateUser,
             emailVerification,
             verifyUser,
+            forgotPasswordEmail,
         }}>
         {children}
         </UserContext.Provider>

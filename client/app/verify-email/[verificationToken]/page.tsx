@@ -1,14 +1,14 @@
 "use client"
 import { useUserContext } from '@/context/userContext';
-import React from 'react'
+import React,{use} from 'react'
 
 interface Props{
-    params:{
+    params:Promise<{
         verificationToken:string;
-    };
+    }>;
 }
 function page({params}:Props) {
-const{verificationToken}=params;
+const{verificationToken}=use(params);
 
 const {verifyUser}=useUserContext();
 

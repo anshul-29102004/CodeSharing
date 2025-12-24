@@ -267,11 +267,11 @@ export const forgotPassword=asyncHandler(async(req,res)=>{
         await token.deleteOne();
     }
     const passwordResetToken=crypto.randomBytes(64).toString("hex")+user._id
-    const hashedToken=hashToken(passwordResetToken)
-    await newToken({
+    const hashedToken=await hashToken(passwordResetToken)
+    await Token({
         userId:user._id,
         passwordResetToken:hashedToken,
-        createdAt:Date.now,
+        createdAt:Date.now(),
         expiresAt:Date.now()+60*60*1000,  //1 hour
      }).save();
      
