@@ -1,5 +1,32 @@
 @import "tailwindcss";
 
+:root{
+   --color--bg-0: #fbfbfd;
+  --color--bg-1: #252525;
+  --color--bg-2: #212121;
+  --color--bg-3: #181818;
+  --color--bg-4: #1a1a1a;
+  --color--bg-5: #0f1217;
+  --color--green-light: #27ae60;
+  --color--green-dark: #dbe1e8;
+  --color--grey-0: #f8f8f8;
+  --color--grey-0: #dbe1e8;
+  --color--grey-1: #b2becd;
+  --color--grey-2: #6c7983;
+  --color--grey-3: #454e56;
+  --color--grey-4: #2a2e35;
+  --color--grey-5: #12181b;
+  --color--rgba-0: rgba(255, 255, 255, 0.3);
+  --color--rgba-1: rgba(255, 255, 255, 0.2);
+  --color--rgba-2: rgba(255, 255, 255, 0.1);
+  --color--rgba-3: rgba(255, 255, 255, 0.05);
+  --color--rgba-4: rgba(255, 255, 255, 0.02);
+}
+
+body{
+    background-color: var(--color--bg-3);
+    height:100%;
+}
 .auth-page
 {
     height:100vh;
@@ -7,11 +34,11 @@
     
 }
 
-form{
+.auth-page form{
     position: relative;
     box-shadow: 2px 3px 15px rgba(0,0,0,0.08);
 }
-form >img{
+.auth-page form img{
     position:absolute;
     top:0;
     left:0;

@@ -35,7 +35,7 @@ export const registerUser=asyncHandler(async(req,res)=>{
     //generate token with user id
     const token=generateToken(user._id);
 
-    res.cookie("token",token,{
+    res.cookie("snippet_master_token",token,{
         path:"/",
         httpOnly:true,
         maxAge:30*24*60*60*1000,
@@ -86,7 +86,7 @@ export const loginUser=asyncHandler(async(req,res)=>{
     const token=generateToken(userExists._id);
     if(userExists && isMatch){
         const{_id,name,email,role,photo,bio,isVerified}=userExists
-        res.cookie("token",token,{
+        res.cookie("snippet_master_token",token,{
             path:"/",
             httpOnly:true,
             maxAge:30*24*60*60*1000,  //30days
@@ -159,7 +159,7 @@ export const updateUser=asyncHandler(async(req,res)=>{
 
 //login status
 export const userLoginStatus=asyncHandler(async(req,res)=>{
-    const token=req.cookies.token;
+    const token=req.cookies.snippet_master_token;
     if(!token)
     {
         res.status(401).json({message:"Not authorized,please login"});
