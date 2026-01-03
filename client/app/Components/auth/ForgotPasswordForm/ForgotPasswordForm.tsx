@@ -13,6 +13,7 @@ function ForgotPasswordForm() {
  const handleSubmit=(e:any)=>{
   e.preventDefault();
   forgotPasswordEmail(email)
+  setEmail("");
  }
 
 

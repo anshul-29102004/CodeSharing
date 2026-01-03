@@ -8,12 +8,16 @@ import toast from "react-hot-toast"
 
 const UserContext=React.createContext();
 
+axios.defaults.withCredentials=true
+
+
 export const UserContextProvider=({children})=>{
 
   const serverUrl="http://localhost:8000";
 
   const router=useRouter()
   const[user,setUser]=useState({});
+  const[allUsers,setAllUsers]=useState([])
   const [userState,setUserState]=useState({
     name:"",
     email:"",
@@ -202,13 +206,71 @@ const forgotPasswordEmail=async(email)=>{
             withCredentials:true,
         })
         toast.success("Forgot password email sent successfully")
+
         setLoading(false);
+        
      } catch (error) {
         console.log("Error sending forgot password email",error)
         toast.error(error.response.data.message)
         setLoading(false)
      }
 }
+
+const resetPassword=async(token,password)=>{
+    setLoading(true);
+    try {
+       const res=await axios.post(`${serverUrl}/api/v1/reset-password/${token}`,{password},
+        {
+            withCredentials:true,
+        })
+        toast.success("Password Reset Successfully")
+        router.push("/login")
+        setLoading(false)
+        
+    } catch (error) {
+        console.log("Error in reseting password",error)
+        toast.error(error.response.data.message)
+        setLoading(false)
+    }
+
+}
+
+const changePassword=async(currentPassword,newPassword)=>{
+   setLoading(true);
+   try {
+    const res=await axios.patch(`${serverUrl}/api/v1/change-password`,{
+        currentPassword,newPassword
+    },
+     {
+        withCredentials:true
+     }
+)
+   toast.success("Password changed succesfully");
+   setLoading(false)
+
+   } catch (error) {
+     console.log("Change password error:", error);
+     toast.error(error.response.data.message);
+     setLoading(false)
+}
+
+}
+
+const fetchAllUsers=async()=>{
+    setLoading(true)
+    try {
+        const res=await axios.get(`${serverUrl}/api/v1/admin/users`,{
+            withCredentials:true
+        })
+        setAllUsers(res.data)
+    } catch (error) {
+        console.log("Get all users error:", error);
+        toast.error(error.response?.data?.message || "Error fetching users");
+    } finally {
+        setLoading(false)
+    }
+}
+
 
 
 
@@ -221,6 +283,22 @@ const forgotPasswordEmail=async(email)=>{
     }))
    }
 
+     const deleteUser=async(id)=>{
+        setLoading(true)
+        try {
+            await axios.delete(`${serverUrl}/api/v1/admin/users/${id}`,{
+                withCredentials:true,
+            }) 
+            toast.success("User deleted successfully")
+            await fetchAllUsers()
+        } catch (error) {
+             console.log("Deleting user error:", error);
+         toast.error(error.response?.data?.message || "Error deleting user");
+        } finally {
+                setLoading(false)
+        }
+     }
+
    useEffect(()=>{
     const loginStatusGetUser=async()=>{
         const isLoggedIn=await userLoginStatus()
@@ -230,7 +308,15 @@ const forgotPasswordEmail=async(email)=>{
         }
     }
     loginStatusGetUser()
+    
    },[]);
+
+    useEffect(()=>{
+     if(user.role==='admin'){
+         fetchAllUsers();
+     }
+    
+    },[user.role])
 
 
     return (
@@ -248,6 +334,12 @@ const forgotPasswordEmail=async(email)=>{
             emailVerification,
             verifyUser,
             forgotPasswordEmail,
+            resetPassword,
+            changePassword,
+            fetchAllUsers,
+            allUsers,
+            deleteUser,
+
         }}>
         {children}
         </UserContext.Provider>

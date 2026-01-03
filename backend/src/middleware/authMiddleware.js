@@ -33,7 +33,7 @@ export const adminMiddleware=asyncHandler(async(req,res,next)=>{
 
 //creator middleware function
 export const creatorMiddleware=asyncHandler(async(req,res,next)=>{
-    if((req.user && req.user.role==="admin")&&(req.user && req.user.role=="creator")){
+    if((req.user && req.user.role==="admin")||(req.user && req.user.role=="creator")){
         next();
         return;
     }

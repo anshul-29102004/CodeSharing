@@ -2,15 +2,22 @@
 import { useUserContext } from "@/context/userContext";
 import useRedirect from "@/hooks/useUserRedirect";
 import { formToJSON } from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import ChangePasswordForm from "./Components/auth/ChangePasswordForm/ChangePasswordForm";
 export default function Home() {
   useRedirect("/login")
   
-  const{logoutUser,user,handlerUserInput,userState,updateUser,emailVerification}=useUserContext()
+  const{logoutUser,user,handlerUserInput,userState,updateUser,emailVerification,allUsers,fetchAllUsers,deleteUser}=useUserContext()
   const{name,photo,isVerified,bio}=user;
 
 
   const [isOpen,setIsOpen]=useState(false)
+
+  useEffect(()=>{
+    if(user?.role==='admin'){
+      fetchAllUsers();
+    }
+  },[user?.role])
  
   const myToggle=()=>{
     setIsOpen(!isOpen);
@@ -54,6 +61,34 @@ export default function Home() {
 
             <button type="submit"  className=" mt-4 px-4 py-2 bg-blue-500 text-white rounded-md">Update Bio</button>
             </form>}
+         </section>
+
+         <section>
+          <div className="mt-4 flex gap-8 ">
+            <div className="flex-1 ">
+               <ChangePasswordForm/>
+            </div>
+            
+            <div className="flex-1">
+              {
+                <ul>
+                  {allUsers.map((user:any)=>(
+                    <li key={user._id} className="mb-2 px-3 py-3 border rounded-md flex items-start gap-4">
+                      <img src={user.photo} alt={user.name} className="w-[40px] h-[40px] rounded-full object-cover" />
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-gray-900 break-words">{user.name}</p>
+                        <p className="text-sm text-gray-600 break-words whitespace-pre-wrap">{user.bio}</p>
+                      </div>
+                      <button className="text-red-600 px-3 py-2 rounded-md hover:bg-red-50" onClick={()=>deleteUser(user._id)}>
+                         Delete
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              }
+
+            </div>
+          </div>
          </section>
       
       </main>
