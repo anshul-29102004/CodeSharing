@@ -87,7 +87,7 @@ function Sidebar() {
         <ul>
           {menu.slice(0,-2).map((item)=>{
             return(
-              <li className={`sidebar-nav-item my-[0.3rem] px-8 py-[0.6rem] cursor-pointer ${pathname===item.url && 'active-nav-item'}`}
+              <li key={item.id} className={`sidebar-nav-item my-[0.3rem] px-8 py-[0.6rem] cursor-pointer ${pathname===item.url && 'active-nav-item'}`}
               onClick={(e)=>{
                 router.push(item.url)
               }}>
@@ -103,7 +103,7 @@ function Sidebar() {
          <ul className={`${isSidebarOpen ? 'mb-2' : 'mb-[5.5rem]'}`}>
           {menu.slice(-2).map((item)=>{
             return(
-              <li className={`sidebar-nav-item my-[0.3rem] px-8 py-[0.6rem] cursor-pointer ${pathname===item.url && 'active-nav-item'}`}
+              <li key={item.id} className={`sidebar-nav-item my-[0.3rem] px-8 py-[0.6rem] cursor-pointer ${pathname===item.url && 'active-nav-item'}`}
               onClick={(e)=>{
                 router.push(item.url)
               }}>

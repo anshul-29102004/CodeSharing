@@ -5,20 +5,20 @@ import mongoose, { Query } from 'mongoose'
 export const createSnippet=asyncHandler(async(req,res)=>{
     try {
         const userId=req.user._id
-        const {title,description,code,languague,tags,isPublic}=req.body
+        const {title,description,code,language,tags,isPublic}=req.body
         if(!userId)
         {
             return res.status(401).json({message:"Unauthorized!Please Login"})
         }
         if(!title || title.length<3)
         {
-          return res.status(400).json({message:"Title is required and shoule be atleast 3 characters long"})     
+          return res.status(400).json({message:"Title is required and should be atleast 3 characters long"})     
         }
-         if(!description || title.length<10)
+         if(!description || description.length<10)
         {
           return res.status(400).json({message:"Description is required and shoule be atleast 10 characters long"})     
         }
-         if(!code || title.length<30)
+         if(!code || code.length<30)
         {
           return res.status(400).json({message:"Code is required and shoule be atleast 30 characters long"})     
         }
