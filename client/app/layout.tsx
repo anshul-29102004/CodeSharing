@@ -6,6 +6,7 @@ import { Toaster } from "react-hot-toast";
 import ContentProvider from "@/providers/ContentProvider";
 import Header from "./Components/Header/Header";
 import NextTopLoader from "nextjs-toploader";
+import ModalProvider from "@/providers/ModalProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,6 +39,7 @@ export default function RootLayout({
           <Toaster position="top-center" />
           <NextTopLoader showSpinner={false} color="#7263F3" height={2}/>
           <UserProvider>
+            <ModalProvider/>
              <div className="h-full ">
               <Header/>
             <ContentProvider>{children}</ContentProvider>

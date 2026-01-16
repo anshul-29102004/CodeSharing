@@ -6,8 +6,11 @@ import Image from 'next/image';
 import SearchInput from '../SearchInput/SearchInput';
 import { login, register } from '@/utils/Icons';
 import { useRouter } from 'next/navigation';
+import { useGlobalContext } from '@/context/globalContext';
+import SearchIcon from '@/public/Icons/SearchIcon';
 function Header() {
     const {user}=useUserContext();
+    const {openModalForSnippet,openProfileModal,openModalForSearch}=useGlobalContext()
     const photo=user?.photo;
 
     const router=useRouter();
@@ -24,7 +27,7 @@ function Header() {
             <SearchInput/>
 
         </div>
-        <div className='flex items-center gap-4'>
+        {!user._id ?<div className='flex items-center gap-4'>
             <button className='btn-hover relative h-[47px] px-8 bg-[#3A3B3C] flex items-center gap-4 rounded-xl overflow-hidden'
             onClick={()=>router.push("/login")}
             >
@@ -40,7 +43,14 @@ function Header() {
                 <span className='blob'></span>
             </button>
 
-        </div>
+        </div>: 
+         <div className='flex items-center gap-2'>
+            <button onClick={openModalForSnippet}   className='mr-4 h-[42px] px-4 flex items-center justify-center bg-white rounded-lg font-semibold hover:bg-white/80 transition duration-200 ease-in-out'>Create Snippet</button>
+            <button onClick={openModalForSearch} className='w-[42px] h-[42px] flex items-center justify-center bg-rgba-3 rounded-lg lg:hidden '><SearchIcon stroke="rgba(249,249,249,0.6)" /></button>
+
+            <button onClick={openProfileModal} className='w-[24px] h-[42px] flex items-center justify-center bg-rgba-3 rounded-lg'><Image src={photo || "/image--user.png"} alt="profile" width={35} height={35} className='rounded-lg'></Image> </button>
+         </div>
+        } 
      </div>
   )
 }

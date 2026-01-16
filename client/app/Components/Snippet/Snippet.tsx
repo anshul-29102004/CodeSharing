@@ -16,6 +16,56 @@ interface Props{
 function Snippet({snippet,height="400px"}:Props) {
   const {useBtnColorMemo,useTagColorMemo}=useSnippetContext()
   const codeString=`${snippet?.code}`
+
+ const languageLogo = (language: string) => {
+  switch (language) {
+    case "c":
+      return "/logos/c.png";
+    case "c#":
+      return "/logos/csharp.svg";
+    case "c++":
+      return "/logos/cpp.svg";
+    case "css":
+      return "/logos/css.svg";
+    case "django":
+      return "/logos/django.svg";
+    case "go":
+      return "/logos/go.svg";
+    case "html":
+      return "/logos/html.svg";
+    case "java":
+      return "/logos/java.svg";
+    case "javascript":
+      return "/logos/javascript.svg";
+    case "json":
+      return "/logos/json.svg";
+    case "kotlin":
+      return "/logos/kotlin.svg";
+    case "lua":
+      return "/logos/lua.svg";
+    case "php":
+      return "/logos/php.svg";
+    case "python":
+      return "/logos/python.svg";
+    case "r":
+      return "/logos/r.svg";
+    case "ruby":
+      return "/ruby.svg";
+    case "rust":
+      return "/logos/rust.svg";
+    case "sql":
+      return "/logos/sql.svg";
+    case "swift":
+      return "/logos/swift.svg";
+    case "typescript":
+      return "/logos/typescript.svg";
+    default:
+      return "/logos/code.svg";
+  }
+};
+
+  
+
   return (
     <div className='shadow-sm flex flex-col border-2 border-rgba-3 rounded-lg'>
         <div className='px-6 py-4 bg-bg-4 flex items-center justify-between rounded-t-lg border-b-2 border-rgba-3'>
@@ -61,7 +111,7 @@ function Snippet({snippet,height="400px"}:Props) {
              <div className='flex-1 flex flex-col'>
               <Link href={`/snippet/${snippet?.title.toLowerCase().split(" ").join("-")}-${snippet?._id}`}>
               <div className='flex items-center gap-2'>
-                <Image src={snippet?.user?.photo || "/image--useruser.png"} width={20} height={20} className='rounded-full' alt="user"></Image>
+                <Image src={languageLogo(snippet?.language) || "/logos/c.svg"} width={20} height={20}  alt="programmingLanguage"></Image>
                 <h2 className='text-xl font-semibold text-gray-300 cursor-pointer hover:text-green-400 hover:underline transition-all ease-in-out duration-300'>{snippet?.title}</h2>
                 </div>
                 </Link>
