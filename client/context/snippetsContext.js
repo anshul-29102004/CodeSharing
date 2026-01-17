@@ -1,14 +1,32 @@
 import React, {  createContext, useContext,useEffect,useState } from 'react'
 import axios from 'axios'
 import { useMemo } from "react";
+import { useGlobalContext } from './globalContext';
 
 const SnippetsContext=createContext();
 
 
 export const SnippetsProvider=({children})=>{
+
+  const {closeModal}=useGlobalContext()
  
  const serverUrl="http://localhost:8000/api/v1"
   const[publicSnippets,setPublicSnippets]=useState([])
+  const [tags,setTags]=useState([])
+  const createSnippet=async(data)=>{
+
+    
+    try {
+      const res=await axios.post(`${serverUrl}/create-snippet`,data)
+      setPublicSnippets([res.data,...publicSnippets])
+      // getPublicSnippets()
+      toast.sucess("Snippet created successfully")
+      closeModal();
+
+    } catch (error) {
+      console.log("Error creating snippet",error);
+    }
+  }
 
   const getPublicSnippets=async(userId,tagId,searchQuery,page,limit)=>{
     try {
@@ -44,6 +62,16 @@ export const SnippetsProvider=({children})=>{
 
     }
   }
+  
+  const getTags=async()=>{
+    try {
+      const res=await axios.get(`${serverUrl}/tags`)
+      setTags(res.data)
+    } catch (error) {
+      console.log("Error fetching tags",error);
+    }
+  }
+
 
   const gradients = {
     buttonGradient1:
@@ -83,7 +111,8 @@ export const SnippetsProvider=({children})=>{
     const useTagColorMemo=useMemo(()=>randomTagColor,[]);
   
     useEffect(()=>{
-    getPublicSnippets()
+    getPublicSnippets(),
+    getTags()
     
   },[])
 
@@ -93,6 +122,8 @@ export const SnippetsProvider=({children})=>{
           getPublicSnippets,
           useBtnColorMemo,
           useTagColorMemo,
+          createSnippet,
+          getTags,
 
 
 

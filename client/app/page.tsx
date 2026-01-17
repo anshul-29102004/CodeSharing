@@ -6,6 +6,8 @@ import Snippet from "./Components/Snippet/Snippet"
 
 
 
+
+
 export default function Home(){
    const {publicSnippets}=useSnippetContext()
    
