@@ -25,8 +25,21 @@ export const SnippetsProvider=({children})=>{
 
     } catch (error) {
       console.log("Error creating snippet",error);
+      toast.error(error.response.data.message)
     }
   }
+
+   const updateSnippet=async(data)=>{
+    try {
+      await axios.patch(`${serverUrl}/snippet/${data._id}`, data);
+      getPublicSnippets();
+      toast.sucess("Snippet updated successfully")
+    } catch (error) {
+      console.log("Error in updating snippet",error);
+    }
+   }
+
+
 
   const getPublicSnippets=async(userId,tagId,searchQuery,page,limit)=>{
     try {
@@ -60,6 +73,30 @@ export const SnippetsProvider=({children})=>{
         console.log("Error fetching public snippets",error)
         return [];
 
+    }
+  }
+
+
+  const deleteSnippet=async(id)=>{
+    try {
+      await axios.delete(`${serverUrl}/snippet/${id}`)
+      getPublicSnippets()
+      toast.success("Deleted snippet successfully")
+    } catch (error) {
+      console.log("Error deleting snippet",error);
+      toast.error(error.response.data.message)
+
+    }
+  }
+
+  const likeSnippet=async(id)=>{
+    try {
+      await axxios.patch(`${serverUrl}/snippet/like/${id}`)
+
+    } catch (error) {
+      console.log("Error in liking snippet",error)
+      toast.error(error.response.data.message)
+      
     }
   }
   
@@ -111,8 +148,8 @@ export const SnippetsProvider=({children})=>{
     const useTagColorMemo=useMemo(()=>randomTagColor,[]);
   
     useEffect(()=>{
-    getPublicSnippets(),
-    getTags()
+    getPublicSnippets();
+    getTags();
     
   },[])
 
@@ -124,6 +161,10 @@ export const SnippetsProvider=({children})=>{
           useTagColorMemo,
           createSnippet,
           getTags,
+          updateSnippet,
+          tags,
+          deleteSnippet,
+          likeSnippet,
 
 
 

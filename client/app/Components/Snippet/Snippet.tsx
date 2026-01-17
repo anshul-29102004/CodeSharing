@@ -4,17 +4,29 @@ import { ISnippet, ITag } from '@/types/types';
 import Image from 'next/image';
 import Link from 'next/link';
 import { formatDate } from "@/utils/dates";
-import { bookmarkEmpty, copy, heart, heartOutline } from '@/utils/Icons';
+import { bookmarkEmpty, copy, edit, heart, heartOutline, trash } from '@/utils/Icons';
 import { useSnippetContext } from '@/context/snippetsContext';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import {vs2015} from "react-syntax-highlighter/dist/esm/styles/hljs"
+import { useUserContext } from '@/context/userContext';
+import { useGlobalContext } from '@/context/globalContext';
+import { useRouter } from 'nextjs-toploader/app';
 
 interface Props{
     snippet:ISnippet;
     height?:string;
 }
 function Snippet({snippet,height="400px"}:Props) {
-  const {useBtnColorMemo,useTagColorMemo}=useSnippetContext()
+  const userId=useUserContext().user?._id;
+  const {useBtnColorMemo,useTagColorMemo,deleteSnippet,likeSnippet}=useSnippetContext()
+  const {openModalForEdit}=useGlobalContext()
+  
+   const router=useRouter();
+
+  const[isLiked,setIsLiked]=React.useState(snippet.likedBy.includes(userId));
+  const[likeCount,setLikeCount]=React.useState(snippet.likedBy.length)
+
+
   const codeString=`${snippet?.code}`
 
  const languageLogo = (language: string) => {
@@ -64,7 +76,14 @@ function Snippet({snippet,height="400px"}:Props) {
   }
 };
 
-  
+  const handleLike=async()=>{
+    if(!userId){
+     return router.push("/login")
+    }
+    setIsLiked((prev)=>!prev);
+    setLikeCount((prev)=>(isLiked ? prev -1:prev+1))
+    await likeSnippet(snippet._id)
+  }
 
   return (
     <div className='shadow-sm flex flex-col border-2 border-rgba-3 rounded-lg'>
@@ -119,10 +138,12 @@ function Snippet({snippet,height="400px"}:Props) {
                   {snippet?.description}
                 </p>
 
-              <button className={`flex flex-col items-center text-2xl text-gray-300`}>
-                <span>{heartOutline}</span>
+              <button className={`flex flex-col items-center text-2xl text-gray-300 ${isLiked? "text-rose-500" :'text-gray-300'}`}
+              onClick={handleLike}>
+                <span>{isLiked ? heart :heartOutline}</span>
                 <span className='text-sm font-bold text-gray-300'>
-                  0 likes
+                  {likeCount === 0 ? 0:likeCount}{" "}
+                  {likeCount===1 ? "like" :"likes"}
                 </span>
               </button>
              </div>
@@ -136,6 +157,18 @@ function Snippet({snippet,height="400px"}:Props) {
               })}
 
             </ul>
+
+            {snippet.user?._id === userId && <div className='flex gap-2'>
+              <button className='w-10 h-10 flex items-center justify-center text-blue-400 text-xl rounded-md'
+              style={{background:useBtnColorMemo}} onClick={()=>openModalForEdit(snippet)}>
+                {edit} 
+              </button>
+              
+              <button className='w-10 h-10 flex items-center justify-center text-red-500 text-xl rounded-md'
+              style={{background:useBtnColorMemo}} onClick={()=>deleteSnippet(snippet._id)}>
+               {trash}
+              </button>
+              </div>}
 
           </div>
 
