@@ -13,13 +13,14 @@ export const SnippetsProvider=({children})=>{
  const serverUrl="http://localhost:8000/api/v1"
   const[publicSnippets,setPublicSnippets]=useState([])
   const [tags,setTags]=useState([])
+  const[loading,setLoading]=useState(false)
   const createSnippet=async(data)=>{
 
     
     try {
       const res=await axios.post(`${serverUrl}/create-snippet`,data)
       setPublicSnippets([res.data,...publicSnippets])
-      // getPublicSnippets()
+      getPublicSnippets()
       toast.sucess("Snippet created successfully")
       closeModal();
 
@@ -73,6 +74,18 @@ export const SnippetsProvider=({children})=>{
         console.log("Error fetching public snippets",error)
         return [];
 
+    }
+  }
+
+  const getPublicSnippetById=async(id)=>{
+    setLoading(true)
+    try {
+      const res=await axios.get(`${serverUrl}/snippet/public/${id}`)
+      setLoading(false)
+      return res.data
+    } catch (error) {
+      console.log("Error getting snippet",error);
+      toast.error(error.response.data.message)
     }
   }
 
@@ -165,7 +178,8 @@ export const SnippetsProvider=({children})=>{
           tags,
           deleteSnippet,
           likeSnippet,
-
+          getPublicSnippetById,
+          loading,
 
 
         }}>

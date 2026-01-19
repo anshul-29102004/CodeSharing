@@ -9,7 +9,7 @@ router.get("/snippets/public",getPublicSnippets)
 
 router.get("/snippets",protect,getUserSnippets);
 router.get("/snippet/:id",protect,getUserSnippet)
-router.get("/snippet/public/:id",protect,getPublicSnippet)
+router.get("/snippet/public/:id",getPublicSnippet)
 
 router.patch("snippet/:id",protect,updateSnippet)
 router.delete("/snippet/:id",protect,deleteSnippet)

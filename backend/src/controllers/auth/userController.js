@@ -342,3 +342,20 @@ export const changePassword=asyncHandler(async(req,res)=>{
     }
 })
 
+
+export const getUserById=asyncHandler(async(req,res)=>{
+    const {id}=req.params;
+    if(!id)
+    {
+        return res.status(400).json({message:"User ID is required"})
+    }
+    const user=await User.findById(id).select("-password,-email")
+    if(user)
+    {
+        res.status(200).json(user);
+    }
+    else
+    {
+        res.status(404).json({message:"User not found"})
+    }
+})

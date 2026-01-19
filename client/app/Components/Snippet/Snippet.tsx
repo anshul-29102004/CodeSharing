@@ -11,6 +11,7 @@ import {vs2015} from "react-syntax-highlighter/dist/esm/styles/hljs"
 import { useUserContext } from '@/context/userContext';
 import { useGlobalContext } from '@/context/globalContext';
 import { useRouter } from 'nextjs-toploader/app';
+import { useState,useEffect } from 'react';
 
 interface Props{
     snippet:ISnippet;
@@ -18,13 +19,14 @@ interface Props{
 }
 function Snippet({snippet,height="400px"}:Props) {
   const userId=useUserContext().user?._id;
-  const {useBtnColorMemo,useTagColorMemo,deleteSnippet,likeSnippet}=useSnippetContext()
+  const {useBtnColorMemo,useTagColorMemo,deleteSnippet,likeSnippet,getPublicSnippets}=useSnippetContext()
   const {openModalForEdit}=useGlobalContext()
   
    const router=useRouter();
 
   const[isLiked,setIsLiked]=React.useState(snippet.likedBy.includes(userId));
   const[likeCount,setLikeCount]=React.useState(snippet.likedBy.length)
+  const[activeTag,setActiveTag]=React.useState<string | null>(null)
 
 
   const codeString=`${snippet?.code}`
@@ -84,6 +86,13 @@ function Snippet({snippet,height="400px"}:Props) {
     setLikeCount((prev)=>(isLiked ? prev -1:prev+1))
     await likeSnippet(snippet._id)
   }
+
+  useEffect(()=>{
+   if(activeTag){
+    getPublicSnippets("",activeTag)
+   }
+  },[activeTag])
+
 
   return (
     <div className='shadow-sm flex flex-col border-2 border-rgba-3 rounded-lg'>
@@ -153,6 +162,7 @@ function Snippet({snippet,height="400px"}:Props) {
               {snippet?.tags.map((tag)=>{
                 return <li key={tag._id} className='tag-item px-4 py-1 border border-rgba-2 text-gray-300 rounded-md cursor-pointer '
                 style={{background:useTagColorMemo}}
+                onClick={()=>setActiveTag(tag._id)}
                 >{tag.name}</li>
               })}
 
