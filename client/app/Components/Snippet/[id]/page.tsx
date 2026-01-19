@@ -2,6 +2,8 @@
 import { useSnippetContext } from '@/context/snippetsContext';
 import { ISnippet } from '@/types/types';
 import React, { useEffect, useState } from 'react'
+import Snippet from '../Snippet';
+import LoadingSpinner from '../../LoadingSpinner';
 
 interface Props{
     params:{
@@ -23,8 +25,10 @@ function page({params:{id}}:Props) {
         }
     )()
     },[snippetId])
+    
   return (
-    <main className='p-88'>{
+    <main className='p-8 relative min-h-[90vh]'>{
+        snippet.title? <Snippet snippet={snippet}/> : <div className='text-center'><LoadingSpinner/></div>
     }</main>
   )
 }

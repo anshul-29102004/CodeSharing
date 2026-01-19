@@ -2,6 +2,7 @@ import React, {  createContext, useContext,useEffect,useState } from 'react'
 import axios from 'axios'
 import { useMemo } from "react";
 import { useGlobalContext } from './globalContext';
+import { useUserContext } from './userContext';
 
 const SnippetsContext=createContext();
 
@@ -11,9 +12,14 @@ export const SnippetsProvider=({children})=>{
   const {closeModal}=useGlobalContext()
  
  const serverUrl="http://localhost:8000/api/v1"
+ const userId=useUserContext().user?._id
   const[publicSnippets,setPublicSnippets]=useState([])
   const [tags,setTags]=useState([])
   const[loading,setLoading]=useState(false)
+  const[userSnippets,setUserSnippets]=useState([])
+  const[likedSnippets,setLikedSnippets]=useState([])
+  
+
   const createSnippet=async(data)=>{
 
     
@@ -77,6 +83,16 @@ export const SnippetsProvider=({children})=>{
     }
   }
 
+  const getPopularSnippets=async()=>{
+    try {
+       const res=await axios.get(`${serverUrl}/snippets/popular`)
+
+
+      } catch (error) {
+      console.log("Error in getting popular snippets",error)
+    }
+  }
+
   const getPublicSnippetById=async(id)=>{
     setLoading(true)
     try {
@@ -88,6 +104,48 @@ export const SnippetsProvider=({children})=>{
       toast.error(error.response.data.message)
     }
   }
+
+const getUserSnippets=async(tagId,search)=>{
+  setLoading(true)
+  try {
+    
+    const queryParams=new URLSearchParams()
+    if(tagId){
+      queryParams.append("tagId",tagId)
+    }
+    if(search) {
+      queryParams.append("search",search)
+    }
+    const res=await axios.get(`${serverUrl}/snippets?${queryParams.toString()}`)
+    setLoading(false)
+    setUserSnippets(res.data)
+    
+  } catch (error) {
+    console.log("Error fetching user snippets",error)
+  }
+} 
+
+const getLikedSnippets=async(tagId,search)=>{
+  setLoading(true)
+  try {
+    const queryParams=new URLSearchParams()
+    if(tagId){
+      queryParams.append("tagId",tagId)
+    }
+    if(search){
+      queryParams.append("search",search)
+    }
+    const res=await axios.get(`${serverUrl}/snippet/liked?${queryParams.toString()}`,{
+      withCredentials:true,
+    })
+    setLoading(false)
+    setLikedSnippets(res.data)
+    return res.data
+  } catch (error) {
+    console.log("Error in getting liked snippets",error)
+    toast.error(error.response.data.message)
+  }
+}
 
 
   const deleteSnippet=async(id)=>{
@@ -164,6 +222,7 @@ export const SnippetsProvider=({children})=>{
     getPublicSnippets();
     getTags();
     
+    
   },[])
 
     return (
@@ -180,6 +239,11 @@ export const SnippetsProvider=({children})=>{
           likeSnippet,
           getPublicSnippetById,
           loading,
+          getUserSnippets,
+          userSnippets,
+          getLikedSnippets,
+          likedSnippets,
+          getPopularSnippets,
 
 
         }}>
