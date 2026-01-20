@@ -1,36 +1,25 @@
 "use client";
 import { useSnippetContext } from "@/context/snippetsContext";
-import { useUserContext } from "@/context/userContext";
-import useUserRedirect from "@/hooks/useUserRedirect";
-import React, { useEffect } from "react";
 import { ISnippet } from "@/types/types";
+import React from "react";
 import Categories from "../Components/Categories/Categories";
 import Snippet from "../Components/Snippet/Snippet";
-import useRedirect from "@/hooks/useUserRedirect";
-import toast from "react-hot-toast";
 
 function page() {
-  useRedirect("/login")
-  const userId = useUserContext().user._id;
-  const { getLikedSnippets, likedSnippets } = useSnippetContext();
+  const { popularSnippets } = useSnippetContext();
 
-  useEffect(() => {
-    if (userId) {
-      getLikedSnippets();''
-    }
-  }, [userId]);
-
+  console.log("Popular Snippets:", popularSnippets);
   return (
     <main>
-      {userId && <Categories/>}
+      <Categories/>
 
       <div className="px-8 pt-[6.3rem] pb-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-        {likedSnippets.snippets?.map((snippet: ISnippet) => (
+        {popularSnippets?.snippets?.map((snippet: ISnippet) => (
           <Snippet key={snippet._id} snippet={snippet} />
         ))}
       </div>
 
-      {likedSnippets?.snippets?.length === 0 && (
+      {popularSnippets?.snippets?.length === 0 && (
         <div className="flex items-center justify-center h-[60vh]">
           <h1 className="text-4xl text-red-400">No snippets found!</h1>
         </div>

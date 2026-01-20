@@ -368,7 +368,7 @@ export const getLeaderboard = asyncHandler(async (req, res) => {
   }
 });
 
-export const getPopularSnippet=asyncHandler(async(req,res)=>{//on the basis of likes
+export const getPopularSnippet=asyncHandler(async(req,res)=>{
   try {
      const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;

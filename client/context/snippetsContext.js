@@ -18,6 +18,8 @@ export const SnippetsProvider=({children})=>{
   const[loading,setLoading]=useState(false)
   const[userSnippets,setUserSnippets]=useState([])
   const[likedSnippets,setLikedSnippets]=useState([])
+  const[leaderboard,setLeaderboard]=useState([])
+  const [popularSnippets,setPopularSnippet]=useState([])
   
 
   const createSnippet=async(data)=>{
@@ -83,15 +85,7 @@ export const SnippetsProvider=({children})=>{
     }
   }
 
-  const getPopularSnippets=async()=>{
-    try {
-       const res=await axios.get(`${serverUrl}/snippets/popular`)
-
-
-      } catch (error) {
-      console.log("Error in getting popular snippets",error)
-    }
-  }
+  
 
   const getPublicSnippetById=async(id)=>{
     setLoading(true)
@@ -180,6 +174,36 @@ const getLikedSnippets=async(tagId,search)=>{
     }
   }
 
+  const getLeaderboard=async()=>{
+    setLoading(true)
+    try {
+      const res=await axios.get(`${serverUrl}/leaderboard`)
+      setLoading(false)
+      setLeaderboard(res.data)
+    } catch (error) {
+      console.log("Error getting leaderboard",error)
+    }
+  }
+
+  const getPopularSnippets=async(tagId,search)=>{
+    setLoading(true)
+    try {
+      const queryParams=new URLSearchParams();
+      if(tagId){
+        queryParams.append("tagId",tagId)
+      }
+      if(search){
+        queryParams.append("search",search)
+      }
+      const res=await axios.get(`${serverUrl}/snippets/popular/${queryParams.toString()}`)
+      setLoading(false)
+      setPopularSnippet(res.data)
+      return res.data;
+    } catch (error) {
+      console.log("Error in getting popular snippet",error);
+    }
+  }
+ 
 
   const gradients = {
     buttonGradient1:
@@ -221,6 +245,8 @@ const getLikedSnippets=async(tagId,search)=>{
     useEffect(()=>{
     getPublicSnippets();
     getTags();
+    getLeaderboard();
+    getPopularSnippets();
     
     
   },[])
@@ -244,6 +270,9 @@ const getLikedSnippets=async(tagId,search)=>{
           getLikedSnippets,
           likedSnippets,
           getPopularSnippets,
+          popularSnippets,
+          getLeaderboard,
+          leaderboard,
 
 
         }}>
