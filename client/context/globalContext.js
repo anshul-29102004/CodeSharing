@@ -9,6 +9,7 @@ export const GlobalProvider=({children})=>{
     const [isSidebarOpen,setIsSidebarOpen]=useState(true)
     const [isEditing,setIsEditing]=useState(false)
     const[activeSnippet,setActiveSnippet]=useState(null)
+    
 
     const openModalForSnippet=()=>{
         setModalMode("add-snippet")

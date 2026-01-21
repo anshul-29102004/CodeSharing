@@ -135,10 +135,13 @@ export const updateUser=asyncHandler(async(req,res)=>{
     const user=await User.findById(req.user._id);
     if(user)
     {
-        const{name,bio,photo}=req.body;
+        
         user.name=req.body.name || user.name;
         user.bio=req.body.bio || user.bio;
         user.photo=req.body.photo || user.photo;
+        user.github=req.body.github || user.github;
+        user.linkedin=req.body.linkedin || user.linkedin;
+        user.publicEmail=req.body.publicEmail || user.publicEmail;
 
         const updated=await user.save();
         res.status(200).json({
@@ -149,6 +152,10 @@ export const updateUser=asyncHandler(async(req,res)=>{
             photo:updated.photo,
             bio:updated.bio,
             isVerified:updated.isVerified,
+            github:updated.github,
+            linkedin:updated.linkedin,
+            publicEmail:updated.publicEEmail,
+
         })
     }
     else

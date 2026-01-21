@@ -1,4 +1,5 @@
 "use client";
+import { useGlobalContext } from "@/context/globalContext";
 import { useUserContext } from "@/context/userContext";
 import {
   arrowLeft,
@@ -19,7 +20,8 @@ import React from "react";
 
 function Sidebar() {
   const { user } = useUserContext();
-  const [isSidebarOpen,setIsSidebarOpen]=React.useState(true);
+  const{isSidebarOpen,setIsSidebarOpen}=useGlobalContext()
+  
 
 
   const router = useRouter()
@@ -77,7 +79,8 @@ function Sidebar() {
    
   return <div className={`fixed z-20 bg-2 h-full border-r-[2px] ${isSidebarOpen ? 'w-[15rem]' : "w-[5.2rem]"}`}>
     <span className="u-shadow-2 w-[45px] absolute z-50 top-[21px] right-[-47px] cursor-pointer 
-    text-xl text-gray-400 flex items-center justify-center rounded-tr-lg rounded-br-lg ">
+    text-xl text-gray-400 flex items-center justify-center rounded-tr-lg rounded-br-lg "
+    onClick={()=>setIsSidebarOpen(!isSidebarOpen)}>
       {
         isSidebarOpen ? arrowLeft: bars
       }

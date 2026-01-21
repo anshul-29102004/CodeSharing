@@ -1,15 +1,33 @@
 "use client"
+import { useSnippetContext } from '@/context/snippetsContext';
 import SearchIcon from '@/public/Icons/SearchIcon'
-import React from 'react'
-
+import React, { useEffect } from 'react'
+import lodash from 'lodash'
 interface Props{
     wFull?:boolean;
 }
 
 
 function SearchInput({wFull}:Props) {
-    
+  const {
+    getPublicSnippets,
+    getPopularSnippets,
+    getLikedSnippets,
+    getUserSnippets,
+    getLeaderboard,
+  }=useSnippetContext()
+
+  const {getPublicSnippeets}=useSnippetContext()
   const[searchQuery,setSearchQuery]=React.useState("");
+
+  const getSearchedSnippets=async(query:String)=>{
+      
+  }
+
+  useEffect(()=>{
+    getSearchedSnippets(searchQuery)
+  },[searchQuery])
+  
 
 
 

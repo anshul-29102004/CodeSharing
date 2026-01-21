@@ -12,6 +12,19 @@ const UserSchema=new mongoose.Schema({
         trim:true,
         match:[/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,"Please provide a valid email address"]
     },
+    
+    publicEmail:{
+       type:String,
+    },
+    github:{
+        type:String,
+        default:"",
+    },
+    linkedin:{
+        type:String,
+        default:"",
+    },
+
     password:{
         type:String,
         required:[true,"Please add password"],
