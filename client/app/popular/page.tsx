@@ -1,4 +1,5 @@
 "use client";
+
 import { useSnippetContext } from "@/context/snippetsContext";
 import { ISnippet } from "@/types/types";
 import React from "react";
@@ -11,7 +12,7 @@ function page() {
   console.log("Popular Snippets:", popularSnippets);
   return (
     <main>
-      <Categories/>
+      <Categories />
 
       <div className="px-8 pt-[6.3rem] pb-8 grid grid-cols-1 md:grid-cols-2 gap-6">
         {popularSnippets?.snippets?.map((snippet: ISnippet) => (

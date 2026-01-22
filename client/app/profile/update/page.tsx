@@ -5,7 +5,8 @@ import Image from "next/image";
 import React from "react";
 
 function page() {
-  const { user, updateUser, changePassword, userState, handlerUserInput }=useUserContext();
+  const { user, updateUser, changePassword, userState, handlerUserInput } =
+    useUserContext();
 
   const [oldPassword, setOldPassword] = React.useState("");
   const [newPassword, setNewPassword] = React.useState("");
@@ -22,7 +23,7 @@ function page() {
     <main className="h-[90vh] relative flex justify-center items-center">
       <form
         action=""
-        className="u-shadow-2 px-8 mx-8 my-8 py-6 bg-1 rounded-lg max-w-[1200px] w-full"
+        className="u-shadow-2 px-8 mx-8 my-8 py-6 bg-[#] rounded-lg max-w-[1200px] w-full"
         onSubmit={(e) => {
           e.preventDefault();
           updateUser(e, userState);
@@ -188,13 +189,15 @@ function page() {
             type="button"
             className="py-4 px-8 mt-4 h-[50px] flex justify-center items-center font-medium bg-red-500 text-white rounded-md hover:bg-red-500/50
             transition-all duration-300 ease-in-out"
-            onClick={() => changePassword(oldPassword, newPassword)}>
+            onClick={() => changePassword(oldPassword, newPassword)}
+          >
             Update Password
           </button>
           <button
             type="submit"
             className="py-4 px-8 mt-4 h-[50px] flex justify-center items-center font-medium bg-blue-500 text-white rounded-md
-            hover:bg-blue-500/70 transition-all duration-300 ease-in-out">
+            hover:bg-blue-500/70 transition-all duration-300 ease-in-out"
+          >
             Update Profile
           </button>
         </div>

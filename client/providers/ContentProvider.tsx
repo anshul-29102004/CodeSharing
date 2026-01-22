@@ -1,7 +1,7 @@
 "use client";
 
-import Sidebar from "@/app/Components/Sidebar/Sidebar";
 import { useGlobalContext } from "@/context/globalContext";
+import Sidebar from "@/app/Components/Sidebar/Sidebar";
 import { usePathname } from "next/navigation";
 import React from "react";
 

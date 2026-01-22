@@ -1,4 +1,5 @@
 "use client";
+
 import { plus } from "@/utils/Icons";
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -74,8 +75,8 @@ function page() {
       </div>
 
       <div className="flex">
-        <HelpSidebar/>
-        <div className="px-8 py-10 flex-1 flex flex-col gap-4 bg-2 rounded-tr-md rounded-br-md">
+        <HelpSidebar />
+        <div className="px-8 py-10 flex-1 flex flex-col gap-4 bg-[#212121] rounded-tr-md rounded-br-md">
           {faq.map((item, index) => (
             <motion.div
               key={index}
@@ -83,7 +84,7 @@ function page() {
               initial="hidden"
               animate="visible"
               onClick={() => toggleFaq(index)}
-              className="p-4 flex flex-col gap-2 bg-1 border-[2px] border-rgba-3 rounded-md cursor-pointer shadow-sm"
+              className="p-4 flex flex-col gap-2 bg-[#252525] border-[2px] border-rgba-3 rounded-md cursor-pointer shadow-sm"
             >
               <motion.h2 className="flex justify-between items-center font-bold text-lg ">
                 <span className="text-gray-200">{item.question}</span>

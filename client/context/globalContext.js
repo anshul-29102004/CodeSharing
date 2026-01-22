@@ -1,42 +1,41 @@
-import React,{createContext,useContext, useState} from "react"
+import React, { createContext, useContext, useState } from "react";
 
+const GlobalContext = createContext();
 
-const GlobalContext=createContext()
+export const GlobalProvider = ({ children }) => {
+  const [modalMode, setModalMode] = useState("");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
+  const [activeSnippet, setActiveSnippet] = useState(null);
 
-export const GlobalProvider=({children})=>{
+  const openModalForSnippet = () => {
+    setModalMode("add-snippet");
+    setIsEditing(true);
+  };
 
-    const [modalMode,setModalMode]=useState("")
-    const [isSidebarOpen,setIsSidebarOpen]=useState(true)
-    const [isEditing,setIsEditing]=useState(false)
-    const[activeSnippet,setActiveSnippet]=useState(null)
-    
+  const openProfileModal = () => {
+    setModalMode("profile");
+  };
 
-    const openModalForSnippet=()=>{
-        setModalMode("add-snippet")
-        setIsEditing(true)
-    }
+  const openModalForEdit = (snippet) => {
+    setActiveSnippet(snippet);
+    setModalMode("edit-snippet");
+    setIsEditing(true);
+  };
 
-    const openProfileModal=()=>{
-        setModalMode("profile")
-    }
+  const openModalForSearch = () => {
+    setModalMode("search");
+  };
 
-    const openModalForEdit=(snippet)=>{
-        setActiveSnippet(snippet)
-        setModalMode("edit-snippet")
-        setIsEditing(true)
-    }
+  const closeModal = () => {
+    setModalMode("");
+    setIsEditing(false);
+    setActiveSnippet(null);
+  };
 
-    const openModalForSearch=()=>{
-        setModalMode("search")
-    }
-
-    const closeModal=()=>{
-        setModalMode("")
-        setIsEditing(false)
-        setActiveSnippet(null)
-    }
-
-     return <GlobalContext.Provider value={{
+  return (
+    <GlobalContext.Provider
+      value={{
         modalMode,
         isSidebarOpen,
         isEditing,
@@ -47,9 +46,13 @@ export const GlobalProvider=({children})=>{
         openModalForSearch,
         closeModal,
         setIsSidebarOpen,
-     }}>{children}</GlobalContext.Provider>
-}
+      }}
+    >
+      {children}
+    </GlobalContext.Provider>
+  );
+};
 
-export const useGlobalContext=()=>{
-    return useContext(GlobalContext)
-}
+export const useGlobalContext = () => {
+  return useContext(GlobalContext);
+};

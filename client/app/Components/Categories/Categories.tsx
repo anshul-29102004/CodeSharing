@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect } from "react";
+
 import {
   Carousel,
   CarouselContent,
@@ -48,7 +49,7 @@ function Categories() {
             break;
         }
       } else {
-
+        // id no tag is selected, get all snippets
         await getPublicSnippets();
         await getPopularSnippets();
 
@@ -64,11 +65,11 @@ function Categories() {
 
   return (
     <div className="fixed w-full z-10">
-      <div className="pl-14 pr-[14rem] py-5 bg-3 border-b-2 border-rgba-2">
+      <div className="pl-14 pr-[14rem] py-5 bg-[#181818] border-b-2 border-rgba(255,255,255,0.2)">
         <Carousel className="w-full lg:max-w-[1200px] xl:max-w-[1450px]">
           <CarouselContent className="flex gap-4">
             <CarouselItem
-              className={`relative px-6 py-1 rounded-full cursor-pointer border-[0.1rem] border-rgba-1 select-none
+              className={`relative px-6 py-1 rounded-full cursor-pointer border-[0.1rem] border-rgba(255,255,255,0.2) select-none
                 ${
                   activeTag === "All"
                     ? "text-white bg-[#7263F3]"
@@ -87,7 +88,7 @@ function Categories() {
               return (
                 <CarouselItem
                   key={tag._id}
-                  className={`relative px-6 py-1 text-sm flex items-center rounded-full cursor-pointer border-[0.1rem] border-rgba-1 select-none
+                  className={`relative px-6 py-1 text-sm flex items-center rounded-full cursor-pointer border-[0.1rem] border-rgba(255,255,255,0.2) select-none
                 ${
                   activeTag === tag.name
                     ? "text-white bg-[#7263F3]"

@@ -1,23 +1,42 @@
+import express from "express";
+import {
+  createSnippet,
+  getPublicSnippets,
+  getUserSnippets,
+  getUserSnippet,
+  getPublicSnippet,
+  updateSnippet,
+  deleteSnippet,
+  likeSnippet,
+  getLikedSnippets,
+  getLeaderboard,
+  getPopularSnippets,
+} from "../controllers/snippets/snippetsController.js";
 import { protect } from "../middleware/authMiddleware.js";
-import express from 'express'
-import { createSnippet, deleteSnippet, getLeaderboard, getLikedSnippets, getPopularSnippet, getPublicSnippet, getPublicSnippets, getUserSnippet, getUserSnippets, likeSnippet, updateSnippet } from "../controllers/snippets/snippetsController.js";
 
-const router=express.Router()
+const router = express.Router();
 
-router.post("/create-snippet",protect,createSnippet)
-router.get("/snippets/public",getPublicSnippets)
+router.post("/create-snippet", protect, createSnippet);
+router.get("/snippets/public", getPublicSnippets);
+router.get("/snippets", protect, getUserSnippets);
+router.get("/snippet/:id", protect, getUserSnippet);
+router.get("/snippet/public/:id", getPublicSnippet);
 
-router.get("/snippets",protect,getUserSnippets);
-router.get("/snippet/:id",protect,getUserSnippet)
-router.get("/snippet/public/:id",getPublicSnippet)
+// update snippet
+router.patch("/snippet/:id", protect, updateSnippet);
+// delete snippet
+router.delete("/snippet/:id", protect, deleteSnippet);
 
-router.patch("snippet/:id",protect,updateSnippet)
-router.delete("/snippet/:id",protect,deleteSnippet)
+// like a snippet
+router.patch("/snippet/like/:id", protect, likeSnippet);
 
-router.patch("/snippet/like/:id",protect,likeSnippet)
-router.get("/snippet/liked",protect,getLikedSnippets)
+// get liked snippets
+router.get("/snippets/liked", protect, getLikedSnippets);
 
-router.get("/leaderboard",getLeaderboard)
-router.get("/snippets/popular",getPopularSnippet)
+// get leaderboard
+router.get("/leaderboard", getLeaderboard);
+
+// get random most liked snippets
+router.get("/snippets/popular", getPopularSnippets);
 
 export default router;

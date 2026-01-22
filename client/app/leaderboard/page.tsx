@@ -53,7 +53,7 @@ function page() {
 
       <table className="w-full mt-8">
         <thead>
-          <tr className="bg-rgba-2 text-gray-200">
+          <tr className="bg-rgba(255,255,255,0.1) text-gray-200">
             {tableHeaders.map((header, index) => (
               <th
                 key={index}
@@ -71,10 +71,13 @@ function page() {
             <tr
               key={index}
               className={`cursor-pointer text-gray-300 text-center hover:text-white hover:bg-white/5 transition-all duration-300 ease-in-out
-                ${index % 2 === 0 ? "bg-3" : "bg-rgba-2"}
+                ${index % 2 === 0 ? "bg-[#181818]" : "bg-rgba(255,255,255,0.1"}
                 `}
               onClick={() => {
-                router.push( `/user/${user.name.toLowerCase().split(" ").join("-")}-${user._id}`
+                router.push(
+                  `/user/${user.name.toLowerCase().split(" ").join("-")}-${
+                    user._id
+                  }`
                 );
               }}
             >

@@ -66,7 +66,7 @@ function page() {
     },
     {
       heading: "Contact Us",
-      text: "If you have any questions about this privacy policy, please contact us at support@gmail.com",
+      text: "If you have any questions about this privacy policy, please contact us at support@fictionalsnippetapp.com.",
     },
   ];
 
@@ -78,7 +78,7 @@ function page() {
       </div>
       <div className="flex">
         <HelpSidebar />
-        <div className="px-8 py-10 flex-1 flex flex-col gap-4 bg-2 rounded-tr-md rounded-br-md">
+        <div className="px-8 py-10 flex-1 flex flex-col gap-4 bg-[#212121] rounded-tr-md rounded-br-md">
           {privacyPolicy.map((section, index) => (
             <motion.div
               key={index}

@@ -3,26 +3,25 @@ import { useSnippetContext } from "@/context/snippetsContext";
 import { useUserContext } from "@/context/userContext";
 import useUserRedirect from "@/hooks/useUserRedirect";
 import React, { useEffect } from "react";
+
 import { ISnippet } from "@/types/types";
 import Categories from "../Components/Categories/Categories";
 import Snippet from "../Components/Snippet/Snippet";
-import useRedirect from "@/hooks/useUserRedirect";
-import toast from "react-hot-toast";
 
 function page() {
-  useRedirect("/login")
+  useUserRedirect("/login");
   const userId = useUserContext().user._id;
   const { getLikedSnippets, likedSnippets } = useSnippetContext();
 
   useEffect(() => {
     if (userId) {
-      getLikedSnippets();''
+      getLikedSnippets();
     }
   }, [userId]);
 
   return (
     <main>
-      {userId && <Categories/>}
+      {userId && <Categories />}
 
       <div className="px-8 pt-[6.3rem] pb-8 grid grid-cols-1 md:grid-cols-2 gap-6">
         {likedSnippets.snippets?.map((snippet: ISnippet) => (

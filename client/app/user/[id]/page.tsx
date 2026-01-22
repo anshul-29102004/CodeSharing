@@ -8,12 +8,15 @@ import { joinedOn } from "@/utils/dates";
 import { envelope, github, linkedin } from "@/utils/Icons";
 import Link from "next/link";
 import React, { useEffect } from "react";
-import { useParams } from "next/navigation";
 
-function page() {
-  const params = useParams();
-  const id = params.id as string;
+interface Props {
+  params: Promise<{
+    id: string;
+  }>;
+}
 
+function page({ params }: Props) {
+  const { id } = React.use(params);
   const { getUserById } = useUserContext();
   const { getPublicSnippets } = useSnippetContext();
 
@@ -39,7 +42,7 @@ function page() {
 
   useEffect(() => {
     if (creatorId) {
-    
+      // ensure user id is available before fetching snippets
       (async () => {
         try {
           const res = await getPublicSnippets(creatorId);
@@ -107,7 +110,8 @@ function page() {
 
         <div className="py-8 grid grid-cols-1 md:grid-cols-2 gap-6">
           {snippets.map((snippet: ISnippet) => (
-            <Snippet key={snippet._id} snippet={snippet} />
+            <Snippet
+             key={snippet._id} snippet={snippet} />
           ))}
         </div>
       </section>

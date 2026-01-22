@@ -1,27 +1,29 @@
 import React, { useEffect } from "react";
 
-interface UseDetectOutsideProps{
-    ref:React.RefObject<HTMLDivElement>;
-    callback:()=>void;
+interface DetectOutsideProps {
+  ref: React.RefObject<HTMLDivElement>;
+  callback: () => void;
 }
 
-function useDetectOutside({ref,callback}:UseDetectOutsideProps){
-    
-    useEffect(()=>{
-        const handleClickOutside=(event:MouseEvent)=>{
-            if(ref.current && !ref.current.contains(event.target as Node)){
-                callback()
-            }
+function useDetectOutside({ ref, callback }: DetectOutsideProps) {
+  useEffect(() => {
+    // handle click outside
+    const handleClickOutside = (event: MouseEvent) => {
+      if (ref.current && !ref.current.contains(event.target as Node)) {
+        callback();
+      }
+    };
 
-        }
-        document.addEventListener("mousedown",handleClickOutside);
-        return ()=>{
-            document.removeEventListener("mousedown",handleClickOutside)
+    document.addEventListener("mousedown", handleClickOutside);
 
-        }
-    },[ref,callback])
-      
-    return ref;
+    // clean up
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [ref, callback]);
+
+  return ref;
 }
 
-export default useDetectOutside
+export default useDetectOutside;

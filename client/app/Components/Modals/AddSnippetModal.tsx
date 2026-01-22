@@ -32,6 +32,8 @@ function AddSnippetModal() {
 
   useEffect(() => {
     if (modalMode === "edit-snippet" && activeSnippet) {
+      // initialize activeTags and form fields with the activeSnippet data
+
       setActiveTags(activeSnippet.tags);
       setTitle(activeSnippet.title);
       setDescription(activeSnippet.description);
@@ -80,14 +82,14 @@ function AddSnippetModal() {
     });
 
     if (isTagActive) {
-    
+      // remove from active tags
       setActiveTags(
         activeTags.filter((activeTag: { _id: string }) => {
           return activeTag._id !== tag._id;
         })
       );
     } else {
-      
+      // add to active tags
       setActiveTags([...activeTags, tag]);
     }
   };
@@ -123,7 +125,7 @@ function AddSnippetModal() {
     <div className="fixed top-0 left-0 z-40 h-full w-full bg-[#000]/30 backdrop-blur-sm bg-opacity-50 overflow-hidden">
       <div
         ref={ref}
-        className="py-5 px-6 bg-3 max-w-[920px] w-full flex flex-col gap-4 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg shadow-md"
+        className="py-5 px-6 bg-[#181818] max-w-[920px] w-full flex flex-col gap-4 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg shadow-md"
       >
         <form action="" className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <h1 className="text-white text-3xl font-bold">
@@ -144,7 +146,7 @@ function AddSnippetModal() {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Title"
-                className="w-full h-12 px-4 bg-1 text-white rounded-lg"
+                className="w-full h-12 px-4 bg-[#252525] text-white rounded-lg"
               />
             </div>
             <div>
@@ -169,7 +171,7 @@ function AddSnippetModal() {
                 name="isPublic"
                 value={isPublic.toString()}
                 onChange={(e) => setIsPublic(e.target.value === "true")}
-                className="w-full h-12 px-4 bg-1 text-white rounded-lg cursor-pointer"
+                className="w-full h-12 px-4 bg-[#252525] text-white rounded-lg cursor-pointer"
               >
                 <option value="true">Public</option>
                 <option value="false">Private</option>
@@ -183,7 +185,7 @@ function AddSnippetModal() {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Description"
-              className="w-full pt-2 px-4 bg-1 text-white rounded-lg"
+              className="w-full pt-2 px-4 bg-[#252525] text-white rounded-lg"
               rows={2}
             ></textarea>
           </div>
@@ -195,7 +197,7 @@ function AddSnippetModal() {
                   name="code"
                   value={code}
                   onChange={(e) => setCode(e.target.value)}
-                  className="w-full pt-2 h-[400px] px-4 bg-1 text-white rounded-lg"
+                  className="w-full pt-2 h-[400px] px-4 bg-[#252525] text-white rounded-lg"
                   placeholder="// Code here..."
                 ></textarea>
               </code>

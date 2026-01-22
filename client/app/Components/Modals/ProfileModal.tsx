@@ -47,7 +47,7 @@ function ProfileModal() {
   return (
     <div
       ref={ref}
-      className="u-shadow-1 fixed z-30 right-8 top-[4.2rem] bg-1 rounded-lg border border-rgba-2"
+      className="u-shadow-1 fixed z-30 right-8 top-[4.2rem] bg-[#252525] rounded-lg border border-rgba(255,255,255,0.2)"
     >
       <nav>
         <ul className="py-1 min-w-[230px]">

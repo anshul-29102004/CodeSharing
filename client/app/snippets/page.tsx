@@ -3,6 +3,7 @@ import { useSnippetContext } from "@/context/snippetsContext";
 import { useUserContext } from "@/context/userContext";
 import { ISnippet } from "@/types/types";
 import React, { useEffect } from "react";
+
 import useRedirect from "@/hooks/useUserRedirect";
 import Categories from "../Components/Categories/Categories";
 import Snippet from "../Components/Snippet/Snippet";
@@ -20,7 +21,7 @@ function page() {
 
   return (
     <main>
-      {userId && <Categories/>}
+      {userId && <Categories />}
       <div className="px-8 pt-[6.3rem] pb-8 grid grid-cols-1 md:grid-cols-2 gap-6">
         {userSnippets?.snippets?.map((snippet: ISnippet) => {
           return <Snippet key={snippet._id} snippet={snippet} />;
