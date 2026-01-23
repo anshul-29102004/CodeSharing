@@ -9,6 +9,7 @@ import {
   edit,
   heart,
   heartOutline,
+  pdf,
   trash,
 } from "@/utils/Icons";
 import Image from "next/image";
@@ -19,6 +20,7 @@ import { useUserContext } from "@/context/userContext";
 import { useGlobalContext } from "@/context/globalContext";
 import { useRouter } from "nextjs-toploader/app";
 import toast from "react-hot-toast";
+import jsPDF from "jspdf";
 
 interface Props {
   snippet: ISnippet;
@@ -116,6 +118,46 @@ function Snippet({ snippet, height = "400px" }: Props) {
     await navigator.clipboard.writeText(codeString);
     toast.success("Code copied to clipboard");
   };
+ 
+  const pdfConverter=async()=>{
+   try {
+      const pdf = new jsPDF();
+      
+      // Add title
+      pdf.setFontSize(16);
+      pdf.text(snippet.title, 10, 10);
+      
+      // Add metadata
+      pdf.setFontSize(10);
+      pdf.text(`Author: ${snippet.user.name}`, 10, 20);
+      pdf.text(`Language: ${snippet.language}`, 10, 25);
+      pdf.text(`Date: ${formatDate(snippet.createdAt)}`, 10, 30);
+      
+      // Add description
+      if (snippet.description) {
+        pdf.setFontSize(12);
+        pdf.text("Description:", 10, 40);
+        pdf.setFontSize(10);
+        const splitDescription = pdf.splitTextToSize(snippet.description, 180);
+          pdf.text(splitDescription, 10, 45);
+      }
+      
+      // Add code
+      pdf.setFontSize(12);
+      pdf.text("Code:", 10, 60);
+      pdf.setFontSize(8);
+      pdf.setFont("courier");
+      const splitCode = pdf.splitTextToSize(codeString, 180);
+      pdf.text(splitCode, 10, 65);
+      
+      // Download PDF
+       pdf.save(`${snippet.title.replace(/\s+/g, '-')}.pdf`);
+      toast.success("PDF downloaded successfully");
+    } catch (error) {
+      toast.error("Failed to generate PDF");
+      console.error(error);
+    }
+  };
 
   return (
     <div className="shadow-sm flex flex-col border-2 border-rgba-3 rounded-lg">
@@ -154,12 +196,13 @@ function Snippet({ snippet, height = "400px" }: Props) {
           >
             {copy}
           </button>
-          <button
-            className="w-10 h-10 rounded-md text-green-400 text-lg flex items-center justify-center"
-            style={{ background: useBtnColorMemo }}
-          >
-            {bookmarkEmpty}
-          </button>
+          
+        <button className="w-10 h-10 rounded-md text-green-400 text-lg items-center justify-between"
+          style={{background:useBtnColorMemo}}
+          onClick={pdfConverter}>
+            
+            {pdf}
+            </button>
         </div>
       </div>
 

@@ -10,6 +10,7 @@ import {
   help,
   home,
   users,
+  profile,
 } from "@/utils/Icons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -24,6 +25,7 @@ function Sidebar() {
 
   const router = useRouter();
   const pathname = usePathname();
+  
 
   const menu = [
     {
@@ -34,41 +36,42 @@ function Sidebar() {
     },
 
     {
-      id: 4,
+      id: 2,
       name: isSidebarOpen ? "Popular" : "",
       url: "/popular",
       icon: fire,
     },
     {
-      id: 5,
+      id: 3,
       name: isSidebarOpen ? "Top Creators" : "",
       url: `${user ? "/leaderboard" : "/login"}`,
       icon: users,
     },
     {
-      id: 2,
+      id: 4,
       name: isSidebarOpen ? "Favourites" : "",
       url: `${user ? "/favourites" : "/login"}`,
       icon: bookmarkIcon,
     },
     {
-      id: 3,
+      id: 5,
       name: isSidebarOpen ? "My Snippets" : "",
       url: `${user ? "/snippets" : "/login"}`,
       icon: box,
     },
     {
-      id: 1,
+      id: 6,
       name: isSidebarOpen ? "Settings" : "",
       url: `${user._id ? "/profile/update" : "/login"}`,
       icon: gear,
     },
     {
-      id: 2,
+      id: 7,
       name: isSidebarOpen ? "Help" : "",
       url: "/help",
       icon: help,
     },
+    
   ];
 
   const getIconColor = (url: string) => {
@@ -180,7 +183,7 @@ function Sidebar() {
             </ul>
             <p className="text-center text-sm mt-4">
               &copy; {new Date().getFullYear()}{" "}
-              <Link href={"/"}>TheCodeDealer</Link>. All&nbsp;rights reserved.
+              <Link href={"/"}>ABC</Link>. All&nbsp;rights reserved.
             </p>
           </footer>
         )}

@@ -3,7 +3,7 @@ import { useGlobalContext } from "@/context/globalContext";
 import { useSnippetContext } from "@/context/snippetsContext";
 import { useUserContext } from "@/context/userContext";
 import useDetectOutside from "@/hooks/useDetectOutside";
-import { gear, signout } from "@/utils/Icons";
+import { gear, profile, signout } from "@/utils/Icons";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useRef } from "react";
@@ -12,15 +12,28 @@ function ProfileModal() {
   const { closeModal } = useGlobalContext();
   const { getPublicSnippets, getPopularSnippets, getLeaderboard } =
     useSnippetContext();
-  const { logoutUser } = useUserContext();
+  const { logoutUser,user } = useUserContext();
 
   const ref = useRef(null);
   const router = useRouter();
+  
+  const userSlug = user?._id
+    ? `${user.name?.toLowerCase().split(" ").join("-")}-${user._id}`
+    : null;
 
   // close modal when clicked outside
   useDetectOutside({ ref, callback: closeModal });
 
   const menu = [
+    {
+      name:"My Profile",
+      url: userSlug ? `/user/${userSlug}` : "/login",
+      icon:profile,
+      onClick:()=>{
+        closeModal();
+      router.push(userSlug ? `/user/${userSlug}` : "/login");
+      }
+    },
     {
       name: "Settings",
       url: "/profile/update",

@@ -27,3 +27,5 @@ export const up = <i className="fa-solid fa-chevron-up"></i>;
 export const prev = <i className="fa-solid fa-backward"></i>;
 export const next = <i className="fa-solid fa-forward"></i>;
 export const plus = <i className="fa-solid fa-plus"></i>;
+export const pdf=<i className="fa-solid fa-file-pdf"></i>
+export const profile=<i className="fa-solid fa-user"></i>

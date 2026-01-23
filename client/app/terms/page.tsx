@@ -80,11 +80,11 @@ function page() {
 
       <div className="flex">
         <HelpSidebar/>
-        <div className="px-8 py-10 flex-1 flex flex-col gap-4 bg-2">
+        <div className="px-8 py-10 flex-1 flex flex-col gap-4 bg-[#212121]">
           {terms.map((section, index) => (
             <motion.div
               key={index}
-              className={`py-4 px-6 border-rgba-3 ${
+              className={`py-4 px-6 border-rgba(255,255,255,0.05) ${
                 terms.length - 1 === index ? "border-b-mone" : "border-b-[1px]"
               }`}
               variants={animateY}

@@ -58,7 +58,7 @@ function page({ params }: Props) {
 
   return (
     <main className="p-8">
-      <section className="py-8 px-[12rem] bg-2 rounded-lg">
+      <section className="py-8 px-[12rem] bg-[#212121] rounded-lg">
         <div className="flex flex-col items-center">
           <h1 className="text-2xl font-bold text-[#6FCF97]">
             {creatorDetails?.name}
@@ -71,7 +71,7 @@ function page({ params }: Props) {
             <h3 className="text-lg font-bold">User Bio</h3>
             <p>{creatorDetails?.bio}</p>
           </div>
-          <div className="px-16 py-8 bg-1 flex flex-col gap-6 rounded-lg text-lg text-gray-300">
+          <div className="px-16 py-8 bg-[#252525] flex flex-col gap-6 rounded-lg text-lg text-gray-300">
             <Link
               target="_blank"
               href={creatorDetails?.github || "https://github.com"}

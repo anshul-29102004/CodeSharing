@@ -28,7 +28,7 @@ function Header() {
           className="ml-[1px]"
         />
         <h1 className="flex items-center font-bold text-white text-2xl">
-          Snippy
+          SnipShare
         </h1>
       </Link>
 
@@ -66,9 +66,8 @@ function Header() {
 
           <button
             onClick={openModalForSearch}
-            className="w-[42px] h-[42px] flex items-center justify-center bg-rgba(255,255,255,0.05) rounded-lg lg:hidden"
-          >
-            <SearchIcon stroke="rgba(249,249,249,0.6)" />
+            className="w-[42px] h-[42px] flex items-center justify-center bg-rgba(255,255,255,0.05) rounded-lg lg:hidden">
+            <SearchIcon stroke="rgba(249,249,249,0.6)"/>
           </button>
 
           <button

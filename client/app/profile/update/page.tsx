@@ -23,7 +23,7 @@ function page() {
     <main className="h-[90vh] relative flex justify-center items-center">
       <form
         action=""
-        className="u-shadow-2 px-8 mx-8 my-8 py-6 bg-[#] rounded-lg max-w-[1200px] w-full"
+        className="u-shadow-2 px-8 mx-8 my-8 py-6 bg-[#252525] rounded-lg max-w-[1200px] w-full"
         onSubmit={(e) => {
           e.preventDefault();
           updateUser(e, userState);
@@ -36,7 +36,7 @@ function page() {
           <div>
             <label
               htmlFor="file-upload"
-              className="py-4 flex items-center justify-center border-2 border-dashed border-rgba-2 rounded-lg cursor-pointer"
+              className="py-4 flex items-center justify-center border-2 border-dashed border-rgba(255,255,255,0.1) rounded-lg cursor-pointer"
             >
               <Image
                 width={100}
@@ -69,7 +69,7 @@ function page() {
                 defaultValue={user?.github}
                 onChange={(e) => handlerUserInput("github")(e)}
                 placeholder="Github"
-                className="w-full py-[.8rem] pl-[3.2rem] pr-[1rem] text-gray-200 bg-transparent border-[2px] border-rgba-2 rounded-md outline-none"
+                className="w-full py-[.8rem] pl-[3.2rem] pr-[1rem] text-gray-200 bg-transparent border-[2px] border-rgba(255,255,255,0.1) rounded-md outline-none"
               />
             </div>
 
@@ -88,7 +88,7 @@ function page() {
                 defaultValue={user?.linkedin}
                 onChange={(e) => handlerUserInput("linkedin")(e)}
                 placeholder="Linkedin"
-                className="w-full py-[.8rem] pl-[3.2rem] pr-[1rem] text-gray-200 bg-transparent border-[2px] border-rgba-2 rounded-md outline-none"
+                className="w-full py-[.8rem] pl-[3.2rem] pr-[1rem] text-gray-200 bg-transparent border-[2px] border-rgba(255,255,255,0.1) rounded-md outline-none"
               />
             </div>
             <div className="relative w-full">
@@ -106,7 +106,7 @@ function page() {
                 defaultValue={user?.publicEmail}
                 onChange={(e) => handlerUserInput("publicEmail")(e)}
                 placeholder="Public Email"
-                className="w-full py-[.8rem] pl-[3.2rem] pr-[1rem] text-gray-200 bg-transparent border-[2px] border-rgba-2 rounded-md outline-none"
+                className="w-full py-[.8rem] pl-[3.2rem] pr-[1rem] text-gray-200 bg-transparent border-[2px] border-rgba(255,255,255,0.1) rounded-md outline-none"
               />
             </div>
           </div>
@@ -121,7 +121,7 @@ function page() {
                 id="name"
                 name="name"
                 defaultValue={user?.name}
-                className="w-full py-[.8rem] pl-4 pr-1 text-gray-200 bg-transparent border-[2px] border-rgba-2 rounded-md outline-none focus:border-[#6fcf97]"
+                className="w-full py-[.8rem] pl-4 pr-1 text-gray-200 bg-transparent border-[2px] border-rgba(255,255,255,0.1) rounded-md outline-none focus:border-[#6fcf97]"
               />
             </div>
             <div className="flex-1 flex flex-col gap-1">
@@ -133,7 +133,7 @@ function page() {
                 id="email"
                 name="email"
                 defaultValue={user?.email}
-                className="w-full py-[.8rem] pl-4 pr-1 text-gray-200 bg-transparent border-[2px] border-rgba-2 rounded-md outline-none focus:border-[#6fcf97]"
+                className="w-full py-[.8rem] pl-4 pr-1 text-gray-200 bg-transparent border-[2px] border-rgba(255,255,255,0.1) rounded-md outline-none focus:border-[#6fcf97]"
               />
             </div>
           </div>
@@ -149,7 +149,7 @@ function page() {
                 rows={4}
                 defaultValue={user?.bio}
                 onChange={(e) => handlerUserInput("bio")(e)}
-                className="w-full py-4 pl-4 pr-1 text-gray-200 bg-transparent border-[2px] border-rgba-2 rounded-md outline-none focus:border-[#6fcf97] resize-none"
+                className="w-full py-4 pl-4 pr-1 text-gray-200 bg-transparent border-[2px] border-rgba(255,255,255,0.1) rounded-md outline-none focus:border-[#6fcf97] resize-none"
               />
             </div>
 
@@ -164,7 +164,7 @@ function page() {
                   value={oldPassword}
                   onChange={handlePasswordChange}
                   name="oldPassword"
-                  className="w-full py-[.8rem] pl-4 pr-1 text-gray-200 bg-transparent border-[2px] border-rgba-2 rounded-md outline-none focus:border-[#6fcf97]"
+                  className="w-full py-[.8rem] pl-4 pr-1 text-gray-200 bg-transparent border-[2px] border-rgba(255,255,255,0.1) rounded-md outline-none focus:border-[#6fcf97]"
                 />
               </div>
               <div className="flex-1 flex flex-col gap-1">
@@ -177,7 +177,7 @@ function page() {
                   value={newPassword}
                   onChange={handlePasswordChange}
                   name="newPassword"
-                  className="w-full py-[.8rem] pl-4 pr-1 text-gray-200 bg-transparent border-[2px] border-rgba-2 rounded-md outline-none focus:border-[#6fcf97]"
+                  className="w-full py-[.8rem] pl-4 pr-1 text-gray-200 bg-transparent border-[2px] border-rgba(255,255,255,0.1) rounded-md outline-none focus:border-[#6fcf97]"
                 />
               </div>
             </div>
