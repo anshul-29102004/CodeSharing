@@ -77,6 +77,7 @@ function SearchInput({ wFull }: Props) {
         type="text"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
+        suppressHydrationWarning
         className={`pl-10 pr-2 py-2 bg-[#212121] text-gray-200 font-medium border-[2px] border-rgba(255,255,255,0.1) rounded-lg outline-none transition-all duration-300 ease-in-out focus:w-full focus:border-rgba(255,255,255,0.3) ${
           wFull ? "w-full" : "w-[90%]"
         }`}

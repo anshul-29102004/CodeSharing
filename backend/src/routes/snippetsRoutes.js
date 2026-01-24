@@ -11,6 +11,7 @@ import {
   getLikedSnippets,
   getLeaderboard,
   getPopularSnippets,
+  analyzeSnippet,
 } from "../controllers/snippets/snippetsController.js";
 import { protect } from "../middleware/authMiddleware.js";
 
@@ -38,5 +39,7 @@ router.get("/leaderboard", getLeaderboard);
 
 // get random most liked snippets
 router.get("/snippets/popular", getPopularSnippets);
+
+router.post("/analyzeSnippet",analyzeSnippet);
 
 export default router;

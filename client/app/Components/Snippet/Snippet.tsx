@@ -60,7 +60,7 @@ const languageLogo = (language: string) => {
     case "r":
       return "/logos/r.svg";
     case "ruby":
-      return "/ruby.svg";
+      return "/logos/ruby.svg";
     case "rust":
       return "/logos/rust.svg";
     case "sql":
@@ -95,6 +95,14 @@ function Snippet({ snippet, height = "400px" }: Props) {
   const [activeTag, setActiveTag] = React.useState<string | null>(null);
 
   const codeString = `${snippet?.code}`;
+
+  const imageBase = (process.env.NEXT_PUBLIC_IMAGE_BASE_URL || "http://localhost:8000").replace(/\/$/, "");
+  const getPhotoUrl = (photo?: string) => {
+    if (!photo) return "/image--user.png";
+    if (photo.startsWith("http") || photo.startsWith("data:")) return photo;
+    const safeName = encodeURIComponent(photo);
+    return `${imageBase}/uploads/${safeName}`;
+  };
 
   useEffect(() => {
     if (activeTag) {
@@ -171,7 +179,7 @@ function Snippet({ snippet, height = "400px" }: Props) {
         >
           <div className="flex items-center">
             <Image
-              src={snippet?.user?.photo || "/image--useruser.png"}
+              src={getPhotoUrl(snippet?.user?.photo)}
               alt="user"
               width={40}
               height={40}
@@ -235,7 +243,7 @@ function Snippet({ snippet, height = "400px" }: Props) {
             >
               <div className="flex items-center gap-2">
                 <Image
-                  src={languageLogo(snippet?.language) || "/logos/c.svg"}
+                  src={languageLogo(snippet?.language) || "/logos/code.svg"}
                   width={20}
                   height={20}
                   alt="programming language"

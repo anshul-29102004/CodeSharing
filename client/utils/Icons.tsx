@@ -29,3 +29,13 @@ export const next = <i className="fa-solid fa-forward"></i>;
 export const plus = <i className="fa-solid fa-plus"></i>;
 export const pdf=<i className="fa-solid fa-file-pdf"></i>
 export const profile=<i className="fa-solid fa-user"></i>
+export const share=<i className="fa-solid fa-share"></i>
+export const whatsapp =<i className="fa-brands fa-whatsapp"></i>
+export const telegram =<i className="fa-brands fa-telegram"></i>
+export const twitter= <i className="fa-brands fa-x-twitter"></i>
+export const facebook=<i className="fa-brands fa-facebook"></i>
+export const email=<i className="fa-solid fa-envelope"></i>
+export const ai =<i className="fa-solid fa-robot"></i>
+
+
+

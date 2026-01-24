@@ -1,13 +1,15 @@
 "use client";
 
+import React, { useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
+
 import Snippet from "@/app/Components/Snippet/Snippet";
 import { useSnippetContext } from "@/context/snippetsContext";
 import { useUserContext } from "@/context/userContext";
 import { ISnippet, IUser } from "@/types/types";
 import { joinedOn } from "@/utils/dates";
 import { envelope, github, linkedin } from "@/utils/Icons";
-import Link from "next/link";
-import React, { useEffect } from "react";
 
 interface Props {
   params: Promise<{
@@ -21,7 +23,15 @@ function page({ params }: Props) {
   const { getPublicSnippets } = useSnippetContext();
 
   const [creatorDetails, setCreatorDetails] = React.useState({} as IUser);
-  const [snippets, setSnippets] = React.useState([]);
+  const [snippets, setSnippets] = React.useState<ISnippet[]>([]);
+
+  const imageBase = (process.env.NEXT_PUBLIC_IMAGE_BASE_URL || "http://localhost:8000").replace(/\/$/, "");
+  const getPhotoUrl = (photo?: string) => {
+    if (!photo) return "/image--user.png";
+    if (photo.startsWith("http") || photo.startsWith("data:")) return photo;
+    const safeName = encodeURIComponent(photo);
+    return `${imageBase}/uploads/${safeName}`;
+  };
 
   // get creator id from url
   const creatorId = id.split("-").at(-1);
@@ -30,9 +40,6 @@ function page({ params }: Props) {
     (async () => {
       try {
         const userDetails = await getUserById(creatorId);
-
-        console.log("userDetails", userDetails);
-
         setCreatorDetails(userDetails);
       } catch (error) {
         console.log("Error fetching creator details", error);
@@ -42,7 +49,6 @@ function page({ params }: Props) {
 
   useEffect(() => {
     if (creatorId) {
-      // ensure user id is available before fetching snippets
       (async () => {
         try {
           const res = await getPublicSnippets(creatorId);
@@ -54,23 +60,38 @@ function page({ params }: Props) {
     }
   }, [creatorId]);
 
-  console.log("All snippets", snippets);
-
   return (
     <main className="p-8">
-      <section className="py-8 px-[12rem] bg-[#212121] rounded-lg">
-        <div className="flex flex-col items-center">
+      {/* ================= TOP PROFILE SECTION (UPDATED) ================= */}
+      <section className="py-10 px-[12rem] bg-[#212121] rounded-lg">
+        <div className="flex flex-col items-center text-center">
+          {/* USER IMAGE */}
+          <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-[#6FCF97] mb-4">
+            <Image
+              src={getPhotoUrl(creatorDetails?.photo)}
+              alt="user profile"
+              width={96}
+              height={96}
+              className="w-full h-full object-cover"
+            />
+          </div>
+
           <h1 className="text-2xl font-bold text-[#6FCF97]">
             {creatorDetails?.name}
           </h1>
-          <p>Joined {joinedOn(creatorDetails?.createdAt)}</p>
+          <p className="text-gray-400">
+            Joined {joinedOn(creatorDetails?.createdAt)}
+          </p>
         </div>
 
         <div className="mt-12 flex justify-between gap-14">
+          {/* BIO */}
           <div>
             <h3 className="text-lg font-bold">User Bio</h3>
-            <p>{creatorDetails?.bio}</p>
+            <p className="text-gray-400">{creatorDetails?.bio}</p>
           </div>
+
+          {/* SOCIAL LINKS */}
           <div className="px-16 py-8 bg-[#252525] flex flex-col gap-6 rounded-lg text-lg text-gray-300">
             <Link
               target="_blank"
@@ -80,6 +101,7 @@ function page({ params }: Props) {
               <span className="text-2xl">{github}</span>
               <span>GitHub</span>
             </Link>
+
             <Link
               target="_blank"
               href={creatorDetails?.linkedin || "https://linkedin.com"}
@@ -88,6 +110,7 @@ function page({ params }: Props) {
               <span className="text-2xl">{linkedin}</span>
               <span>LinkedIn</span>
             </Link>
+
             <Link
               target="_blank"
               href={`mailto:${creatorDetails?.publicEmail}`}
@@ -100,6 +123,7 @@ function page({ params }: Props) {
         </div>
       </section>
 
+      {/* ================= SNIPPETS SECTION (UNCHANGED) ================= */}
       <section>
         <h1 className="text-center text-2xl font-bold mt-12">
           Snippets created by{" "}
@@ -110,8 +134,7 @@ function page({ params }: Props) {
 
         <div className="py-8 grid grid-cols-1 md:grid-cols-2 gap-6">
           {snippets.map((snippet: ISnippet) => (
-            <Snippet
-             key={snippet._id} snippet={snippet} />
+            <Snippet key={snippet._id} snippet={snippet} />
           ))}
         </div>
       </section>
@@ -119,4 +142,4 @@ function page({ params }: Props) {
   );
 }
 
-export default page;
+export default page; 

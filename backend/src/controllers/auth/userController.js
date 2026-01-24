@@ -176,7 +176,8 @@ export const updateUser = asyncHandler(async (req, res) => {
     // update user properties
     user.name = req.body.name || user.name;
     user.bio = req.body.bio || user.bio;
-    user.photo = req.body.photo || user.photo;
+    // Handle photo upload from multer
+    user.photo = req.file?.filename || req.body.photo || user.photo;
     user.github = req.body.github || user.github;
     user.linkedin = req.body.linkedin || user.linkedin;
     user.publicEmail = req.body.publicEmail || user.publicEmail;

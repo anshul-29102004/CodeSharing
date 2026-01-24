@@ -9,7 +9,11 @@ const UserContext = React.createContext();
 axios.defaults.withCredentials = true;
 
 export const UserContextProvider = ({ children }) => {
-  const serverUrl = "http://localhost:8000";
+  const serverUrl =
+    (process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000").replace(
+      /\/$/,
+      ""
+    );
 
   const router = useRouter();
 
@@ -165,31 +169,40 @@ export const UserContextProvider = ({ children }) => {
 
   // update user details
   const updateUser = async (e, data) => {
-    e.preventDefault();
-    setLoading(true);
+  e.preventDefault();
+  setLoading(true);
 
-    try {
-      const res = await axios.patch(`${serverUrl}/api/v1/user`, data, {
-        withCredentials: true, // send cookies to the server
-      });
+  try {
+    // Create FormData to handle file uploads
+    const formData = new FormData();
+    
+    // Add all data fields
+    Object.keys(data).forEach((key) => {
+      if (data[key]) {
+        formData.append(key, data[key]);
+      }
+    });
 
-      // update the user state
-      setUser((prevState) => {
-        return {
-          ...prevState,
-          ...res.data,
-        };
-      });
+    const res = await axios.patch(`${serverUrl}/api/v1/user`, formData, {
+      withCredentials: true, // let axios set multipart boundary automatically
+    });
 
-      toast.success("User updated successfully");
+    // update the user state
+    setUser((prevState) => {
+      return {
+        ...prevState,
+        ...res.data,
+      };
+    });
 
-      setLoading(false);
-    } catch (error) {
-      console.log("Error updating user details", error);
-      setLoading(false);
-      toast.error(error.response.data.message);
-    }
-  };
+    toast.success("User updated successfully");
+    setLoading(false);
+  } catch (error) {
+    console.log("Error updating user details", error);
+    setLoading(false);
+    toast.error(error.response?.data?.message || "Failed to update user");
+  }
+};
 
   // email verification
   const emailVerification = async () => {
@@ -334,7 +347,8 @@ export const UserContextProvider = ({ children }) => {
 
   // dynamic form handler
   const handlerUserInput = (name) => (e) => {
-    const value = e.target.value;
+    // Support both text inputs and file inputs (photo upload)
+    const value = e.target.type === "file" ? e.target.files?.[0] : e.target.value;
 
     setUserState((prevState) => ({
       ...prevState,

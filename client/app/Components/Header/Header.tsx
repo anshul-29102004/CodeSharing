@@ -17,6 +17,14 @@ function Header() {
   const photo = user?.photo;
   const router = useRouter();
 
+  const imageBase = (process.env.NEXT_PUBLIC_IMAGE_BASE_URL || "http://localhost:8000").replace(/\/$/, "");
+  const getPhotoUrl = (p?: string) => {
+    if (!p) return "/image--user.png";
+    if (p.startsWith("http") || p.startsWith("data:")) return p;
+    const safeName = encodeURIComponent(p);
+    return `${imageBase}/uploads/${safeName}`;
+  };
+
   return (
     <div className="fixed z-20 top-0 w-full px-8 flex items-center justify-between bg-[#252525] border-b-[2px] border-rgba(255,255,255,0.1) h-[8vh]">
       <Link href="/" className="flex items-center gap-2">
@@ -75,7 +83,7 @@ function Header() {
             className="w-[43px] h-[42px] flex items-center justify-center bg-rgba(255,255,255,0.05) rounded-lg"
           >
             <Image
-              src={photo || "/image--user.png"}
+              src={getPhotoUrl(photo)}
               alt="profile"
               width={35}
               height={35}

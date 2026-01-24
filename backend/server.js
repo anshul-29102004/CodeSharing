@@ -19,6 +19,8 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
+// serve uploaded files
+app.use("/uploads", express.static("uploads"));
 
 //routes
 const routerFiles=fs.readdirSync("./src/routes");

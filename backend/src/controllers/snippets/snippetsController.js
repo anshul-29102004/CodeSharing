@@ -1,6 +1,7 @@
 import asyncHandler from "express-async-handler";
 import mongoose from "mongoose";
 import Snippet from "../../models/snippets/SnippetModel.js";
+import OpenAI from "openai";
 
 export const createSnippet = asyncHandler(async (req, res) => {
   try {
@@ -458,3 +459,42 @@ export const getPopularSnippets = asyncHandler(async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 });
+
+
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
+export const analyzeSnippet = async (req, res) => {
+  try {
+    const { prompt } = req.body;
+
+    if (!prompt) {
+      return res.status(400).json({ success: false });
+    }
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o-mini", // fast + cheap
+      messages: [
+        {
+          role: "system",
+          content: "You are a helpful programming assistant.",
+        },
+        {
+          role: "user",
+          content: prompt,
+        },
+      ],
+      temperature: 0.3,
+    });
+
+    res.json({
+      success: true,
+      response: completion.choices[0].message.content,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false });
+  }
+};

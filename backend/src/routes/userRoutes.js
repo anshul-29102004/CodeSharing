@@ -22,14 +22,26 @@ import {
   deleteUser,
   getAllUsers,
 } from "../controllers/auth/adminController.js";
+import multer from 'multer'
 
 const router = express.Router();
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+
+const upload = multer({ storage });
 
 router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.get("/logout", logoutUser);
 router.get("/user", protect, getUser);
-router.patch("/user", protect, updateUser);
+// protect first to ensure auth, then handle file upload
+router.patch("/user", protect, upload.single("photo"), updateUser);
 
 // get user by Id
 router.get("/user/:id", getUserById);
